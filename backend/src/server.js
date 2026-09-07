@@ -2,6 +2,7 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import mongoose from 'mongoose'
+import ordersRouter from './routes/orders.js'
 
 const app = express()
 const PORT = process.env.PORT || 4000
@@ -25,17 +26,11 @@ app.get('/api/delivery-zones', (_req, res) => {
   ])
 })
 
-app.post('/api/orders', async (req, res) => {
-  const { name, email, phone, fulfillment, date } = req.body
-  if (!name || !email || !phone || !fulfillment || !date) {
-    return res.status(400).json({ message: 'Nedostaju obavezni podaci narudžbe.' })
-  }
-  // Database persistence is added in the next backend step.
-  return res.status(201).json({
-    message: 'Narudžba je zaprimljena i čeka ručnu potvrdu.',
-    orderNumber: `AK-${Date.now().toString().slice(-8)}`,
-    status: 'Zaprimljena'
-  })
+app.use('/api/orders', ordersRouter)
+
+app.use((error, _req, res, _next) => {
+  console.error(error)
+  res.status(500).json({ message: 'Došlo je do pogreške na poslužitelju.' })
 })
 
 async function start() {
