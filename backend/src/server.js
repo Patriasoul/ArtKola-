@@ -7,6 +7,7 @@ import customOrdersRouter from './routes/customOrders.js'
 import settingsRouter from './routes/settings.js'
 import productsRouter from './routes/products.js'
 import categoriesRouter from './routes/categories.js'
+import calendarRouter from './routes/calendar.js'
 
 const app = express()
 const PORT = process.env.PORT || 4000
@@ -20,6 +21,7 @@ app.use('/api/custom-orders', customOrdersRouter)
 app.use('/api/settings', settingsRouter)
 app.use('/api/products', productsRouter)
 app.use('/api/categories', categoriesRouter)
+app.use('/api/calendar', calendarRouter)
 
 app.use((error, _req, res, _next) => {
   console.error(error)
