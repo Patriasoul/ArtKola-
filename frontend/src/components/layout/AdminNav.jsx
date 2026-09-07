@@ -1,7 +1,8 @@
 import { NavLink } from 'react-router-dom'
 
 const links = [
-  ['/admin', 'Pregled'],
+  ['/admin', 'Dashboard'],
+  ['/admin/narudzbe', 'Narudžbe'],
   ['/admin/ponuda', 'Ponuda'],
   ['/admin/torte-po-zelji', 'Torte po želji'],
   ['/admin/kalendar', 'Kalendar'],
