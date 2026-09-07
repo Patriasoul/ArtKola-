@@ -9,6 +9,7 @@ import AdminPage from './pages/AdminPage'
 import AdminCatalogPage from './pages/AdminCatalogPage'
 import AdminCalendarPage from './pages/AdminCalendarPage'
 import AdminSettingsPage from './pages/AdminSettingsPage'
+import AdminCustomOrdersPage from './pages/AdminCustomOrdersPage'
 import { products } from './data/products'
 import { useCart } from './hooks/useCart'
 
@@ -26,6 +27,7 @@ function App() {
       <Route path="/admin/ponuda" element={<AdminCatalogPage />} />
       <Route path="/admin/kalendar" element={<AdminCalendarPage />} />
       <Route path="/admin/postavke" element={<AdminSettingsPage />} />
+      <Route path="/admin/torte-po-zelji" element={<AdminCustomOrdersPage />} />
       <Route path="*" element={<HomePage products={products} onAdd={cartState.addToCart} />} />
     </Routes>
     <Footer />
