@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
+import AdminNav from '../components/layout/AdminNav'
 import { getCustomOrders, updateCustomOrder } from '../services/customOrdersApi'
+import './admin.css'
 
 const statuses = ['Zaprimljen', 'U obradi', 'Ponuda poslana', 'Potvrđen', 'Odbijen', 'Završen']
 const money = value => value === null || value === '' || value === undefined ? 'Nije određena' : `${Number(value).toFixed(2).replace('.', ',')} €`
@@ -26,6 +28,7 @@ export default function AdminCustomOrdersPage() {
   }
 
   return <main className="admin-page section">
+    <AdminNav />
     <div className="section-heading"><div><p className="eyebrow">ADMIN</p><h1>Torte po želji</h1><p className="muted">Pregledaj upite, odredi konačnu cijenu i potvrdi status.</p></div><button className="button secondary" onClick={load}>Osvježi</button></div>
     {error && <div className="form-error">{error}</div>}
     <div className="custom-admin-layout">
