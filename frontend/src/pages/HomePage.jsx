@@ -1,7 +1,19 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import ProductGrid from '../components/products/ProductGrid'
+import { getProducts } from '../services/catalogApi'
 
-export default function HomePage({ products, onAdd }) {
+export default function HomePage({ products: fallbackProducts, onAdd }) {
+  const [products, setProducts] = useState(fallbackProducts || [])
+
+  useEffect(() => {
+    let active = true
+    getProducts()
+      .then((data) => { if (active && Array.isArray(data) && data.length) setProducts(data) })
+      .catch(() => {})
+    return () => { active = false }
+  }, [])
+
   return (
     <main>
       <section className="hero">
