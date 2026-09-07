@@ -1,55 +1,15 @@
 import { useEffect, useState } from 'react'
+import AdminNav from '../components/layout/AdminNav'
 import { getSettings, updateSettings } from '../services/calendarApi'
+import './admin.css'
 
-const defaultZones = [
-  { label: 'Do 5 km', maxKm: 5, price: 3, note: '' },
-  { label: '5–10 km', maxKm: 10, price: 5, note: '' },
-  { label: '10–20 km', maxKm: 20, price: 8, note: '' },
-  { label: '20–30 km', maxKm: 30, price: 12, note: '' },
-  { label: '30–40 km', maxKm: 40, price: 15, note: '' },
-  { label: '40–50 km', maxKm: 50, price: 20, note: '' },
-  { label: 'Preko 50 km', maxKm: '', price: '', note: 'Po dogovoru' }
-]
+const defaultZones = [{ label: 'Do 5 km', maxKm: 5, price: 3, note: '' }, { label: '5–10 km', maxKm: 10, price: 5, note: '' }, { label: '10–20 km', maxKm: 20, price: 8, note: '' }, { label: '20–30 km', maxKm: 30, price: 12, note: '' }, { label: '30–40 km', maxKm: 40, price: 15, note: '' }, { label: '40–50 km', maxKm: 50, price: 20, note: '' }, { label: 'Preko 50 km', maxKm: '', price: '', note: 'Po dogovoru' }]
 
 export default function AdminSettingsPage() {
-  const [settings, setSettings] = useState({ businessName: 'ArtKolač', contactEmail: '', contactPhone: '', maxOrdersPerDay: 10, deliveryZones: defaultZones })
-  const [loading, setLoading] = useState(true)
-  const [saving, setSaving] = useState(false)
-  const [error, setError] = useState('')
-  const [message, setMessage] = useState('')
-
-  useEffect(() => {
-    getSettings().then(setSettings).catch(e => setError(e.message)).finally(() => setLoading(false))
-  }, [])
-
-  function updateZone(index, field, value) {
-    setSettings(current => ({ ...current, deliveryZones: current.deliveryZones.map((zone, i) => i === index ? { ...zone, [field]: value } : zone) }))
-  }
-
-  async function save(e) {
-    e.preventDefault()
-    setSaving(true); setError(''); setMessage('')
-    try {
-      const payload = {
-        ...settings,
-        maxOrdersPerDay: Math.max(1, Number(settings.maxOrdersPerDay) || 1),
-        deliveryZones: settings.deliveryZones.map(zone => ({ ...zone, maxKm: zone.maxKm === '' ? null : Number(zone.maxKm), price: zone.price === '' ? null : Number(zone.price) }))
-      }
-      const saved = await updateSettings(payload)
-      setSettings(saved); setMessage('Postavke su spremljene.')
-    } catch (e) { setError(e.message) } finally { setSaving(false) }
-  }
-
-  if (loading) return <main className="admin-page section"><p className="muted">Učitavanje postavki…</p></main>
-
-  return <main className="admin-page section">
-    <div className="section-heading"><div><p className="eyebrow">ADMIN</p><h1>Postavke i dostava</h1><p className="muted">Ovdje mijenjaš podatke poslovanja i cijene dostave.</p></div></div>
-    {error && <div className="form-error">{error}</div>}
-    {message && <div className="form-success">{message}</div>}
-    <form className="admin-settings-form" onSubmit={save}>
-      <section className="card"><h2>Osnovni podaci</h2><div className="form-grid"><label>Naziv poslovanja<input value={settings.businessName || ''} onChange={e => setSettings({ ...settings, businessName: e.target.value })} /></label><label>Email<input type="email" value={settings.contactEmail || ''} onChange={e => setSettings({ ...settings, contactEmail: e.target.value })} /></label><label>Telefon<input value={settings.contactPhone || ''} onChange={e => setSettings({ ...settings, contactPhone: e.target.value })} /></label><label>Maks. narudžbi dnevno<input type="number" min="1" value={settings.maxOrdersPerDay || 1} onChange={e => setSettings({ ...settings, maxOrdersPerDay: e.target.value })} /></label></div></section>
-      <section className="card"><h2>Dostava</h2><p className="muted">Cijene se automatski koriste pri izračunu narudžbe.</p><div className="delivery-settings-list">{settings.deliveryZones.map((zone, index) => <div className="delivery-setting-row" key={index}><input value={zone.label || ''} onChange={e => updateZone(index, 'label', e.target.value)} aria-label="Naziv zone" /><input type="number" min="0" step="1" value={zone.maxKm ?? ''} placeholder="km" onChange={e => updateZone(index, 'maxKm', e.target.value)} aria-label="Maksimalni kilometri" /><div className="euro-input"><input type="number" min="0" step="0.01" value={zone.price ?? ''} placeholder="dogovor" onChange={e => updateZone(index, 'price', e.target.value)} aria-label="Cijena dostave" /><span>€</span></div><input value={zone.note || ''} placeholder="Napomena" onChange={e => updateZone(index, 'note', e.target.value)} aria-label="Napomena" /></div>)}</div></section>
-      <button className="button" type="submit" disabled={saving}>{saving ? 'Spremam…' : 'Spremi sve postavke'}</button>
-    </form>
-  </main>
+  const [settings, setSettings] = useState({ businessName: 'ArtKolač', contactEmail: '', contactPhone: '', maxOrdersPerDay: 10, deliveryZones: defaultZones }); const [loading, setLoading] = useState(true); const [saving, setSaving] = useState(false); const [error, setError] = useState(''); const [message, setMessage] = useState('')
+  useEffect(() => { getSettings().then(setSettings).catch(e => setError(e.message)).finally(() => setLoading(false)) }, [])
+  function updateZone(index, field, value) { setSettings(current => ({ ...current, deliveryZones: current.deliveryZones.map((zone, i) => i === index ? { ...zone, [field]: value } : zone) })) }
+  async function save(e) { e.preventDefault(); setSaving(true); setError(''); setMessage(''); try { const payload = { ...settings, maxOrdersPerDay: Math.max(1, Number(settings.maxOrdersPerDay) || 1), deliveryZones: settings.deliveryZones.map(zone => ({ ...zone, maxKm: zone.maxKm === '' ? null : Number(zone.maxKm), price: zone.price === '' ? null : Number(zone.price) })) }; setSettings(await updateSettings(payload)); setMessage('Postavke su spremljene.') } catch (e) { setError(e.message) } finally { setSaving(false) } }
+  if (loading) return <main className="admin-page section"><AdminNav /><p className="muted">Učitavanje postavki…</p></main>
+  return <main className="admin-page section"><AdminNav /><div className="section-heading"><div><p className="eyebrow">ADMIN</p><h1>Postavke i dostava</h1><p className="muted">Ovdje mijenjaš podatke poslovanja i cijene dostave.</p></div></div>{error && <div className="form-error">{error}</div>}{message && <div className="form-success">{message}</div>}<form className="admin-settings-form" onSubmit={save}><section className="card"><h2>Osnovni podaci</h2><div className="form-grid"><label>Naziv poslovanja<input value={settings.businessName || ''} onChange={e => setSettings({ ...settings, businessName: e.target.value })} /></label><label>Email<input type="email" value={settings.contactEmail || ''} onChange={e => setSettings({ ...settings, contactEmail: e.target.value })} /></label><label>Telefon<input value={settings.contactPhone || ''} onChange={e => setSettings({ ...settings, contactPhone: e.target.value })} /></label><label>Maks. narudžbi dnevno<input type="number" min="1" value={settings.maxOrdersPerDay || 1} onChange={e => setSettings({ ...settings, maxOrdersPerDay: e.target.value })} /></label></div></section><section className="card"><h2>Dostava</h2><p className="muted">Cijene se automatski koriste pri izračunu narudžbe.</p><div className="delivery-settings-list">{settings.deliveryZones.map((zone, index) => <div className="delivery-setting-row" key={index}><input value={zone.label || ''} onChange={e => updateZone(index, 'label', e.target.value)} aria-label="Naziv zone" /><input type="number" min="0" step="1" value={zone.maxKm ?? ''} placeholder="km" onChange={e => updateZone(index, 'maxKm', e.target.value)} aria-label="Maksimalni kilometri" /><div className="euro-input"><input type="number" min="0" step="0.01" value={zone.price ?? ''} placeholder="dogovor" onChange={e => updateZone(index, 'price', e.target.value)} aria-label="Cijena dostave" /><span>€</span></div><input value={zone.note || ''} placeholder="Napomena" onChange={e => updateZone(index, 'note', e.target.value)} aria-label="Napomena" /></div>)}</div></section><button className="button" type="submit" disabled={saving}>{saving ? 'Spremam…' : 'Spremi sve postavke'}</button></form></main>
 }
