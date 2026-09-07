@@ -21,7 +21,7 @@ router.post('/', async (req, res, next) => {
 router.patch('/:id', adminAuth, async (req, res, next) => {
   try {
     const update = {}
-    if (req.body.status && statuses.includes(req.body.status)) update.status = req.body.status)
+    if (req.body.status && statuses.includes(req.body.status)) update.status = req.body.status
     if (req.body.proposedPrice !== undefined) update.proposedPrice = req.body.proposedPrice === null ? null : Number(req.body.proposedPrice)
     if (req.body.adminNote !== undefined) update.adminNote = req.body.adminNote
     const item = await CustomOrder.findByIdAndUpdate(req.params.id, update, { new: true })
