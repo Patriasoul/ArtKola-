@@ -6,6 +6,7 @@ import OrderPage from './pages/OrderPage'
 import CustomOrderPage from './pages/CustomOrderPage'
 import AboutContactPage from './pages/AboutContactPage'
 import AdminPage from './pages/AdminPage'
+import AdminCatalogPage from './pages/AdminCatalogPage'
 import { products } from './data/products'
 import { useCart } from './hooks/useCart'
 
@@ -20,6 +21,7 @@ function App() {
       <Route path="/narudzba" element={<OrderPage cart={cartState.cart} subtotal={cartState.subtotal} onRemove={cartState.removeFromCart} onQuantityChange={cartState.changeQuantity} onClear={cartState.clearCart} />} />
       <Route path="/o-nama" element={<AboutContactPage />} />
       <Route path="/admin" element={<AdminPage />} />
+      <Route path="/admin/ponuda" element={<AdminCatalogPage />} />
       <Route path="*" element={<HomePage products={products} onAdd={cartState.addToCart} />} />
     </Routes>
     <Footer />
