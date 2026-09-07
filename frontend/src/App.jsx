@@ -5,37 +5,25 @@ import HomePage from './pages/HomePage'
 import OrderPage from './pages/OrderPage'
 import CustomOrderPage from './pages/CustomOrderPage'
 import AboutContactPage from './pages/AboutContactPage'
+import AdminPage from './pages/AdminPage'
 import { products } from './data/products'
 import { useCart } from './hooks/useCart'
 
 function App() {
   const cartState = useCart()
-
-  return (
-    <div className="app">
-      <Header itemCount={cartState.itemCount} />
-      <Routes>
-        <Route path="/" element={<HomePage products={products} onAdd={cartState.addToCart} />} />
-        <Route path="/ponuda" element={<HomePage products={products} onAdd={cartState.addToCart} />} />
-        <Route path="/torta-po-zelji" element={<CustomOrderPage />} />
-        <Route
-          path="/narudzba"
-          element={
-            <OrderPage
-              cart={cartState.cart}
-              subtotal={cartState.subtotal}
-              onRemove={cartState.removeFromCart}
-              onQuantityChange={cartState.changeQuantity}
-              onClear={cartState.clearCart}
-            />
-          }
-        />
-        <Route path="/o-nama" element={<AboutContactPage />} />
-        <Route path="*" element={<HomePage products={products} onAdd={cartState.addToCart} />} />
-      </Routes>
-      <Footer />
-    </div>
-  )
+  return <div className="app">
+    <Header itemCount={cartState.itemCount} />
+    <Routes>
+      <Route path="/" element={<HomePage products={products} onAdd={cartState.addToCart} />} />
+      <Route path="/ponuda" element={<HomePage products={products} onAdd={cartState.addToCart} />} />
+      <Route path="/torta-po-zelji" element={<CustomOrderPage />} />
+      <Route path="/narudzba" element={<OrderPage cart={cartState.cart} subtotal={cartState.subtotal} onRemove={cartState.removeFromCart} onQuantityChange={cartState.changeQuantity} onClear={cartState.clearCart} />} />
+      <Route path="/o-nama" element={<AboutContactPage />} />
+      <Route path="/admin" element={<AdminPage />} />
+      <Route path="*" element={<HomePage products={products} onAdd={cartState.addToCart} />} />
+    </Routes>
+    <Footer />
+  </div>
 }
 
 export default App
