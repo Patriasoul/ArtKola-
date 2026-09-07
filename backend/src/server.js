@@ -5,6 +5,8 @@ import mongoose from 'mongoose'
 import ordersRouter from './routes/orders.js'
 import customOrdersRouter from './routes/customOrders.js'
 import settingsRouter from './routes/settings.js'
+import productsRouter from './routes/products.js'
+import categoriesRouter from './routes/categories.js'
 
 const app = express()
 const PORT = process.env.PORT || 4000
@@ -16,6 +18,8 @@ app.get('/api/health', (_req, res) => res.json({ ok: true, service: 'ArtKolač A
 app.use('/api/orders', ordersRouter)
 app.use('/api/custom-orders', customOrdersRouter)
 app.use('/api/settings', settingsRouter)
+app.use('/api/products', productsRouter)
+app.use('/api/categories', categoriesRouter)
 
 app.use((error, _req, res, _next) => {
   console.error(error)
