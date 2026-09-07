@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import AdminNav from '../components/layout/AdminNav'
 import { getOrders } from '../services/api'
 import { getCustomOrders } from '../services/customOrdersApi'
@@ -63,15 +64,15 @@ export default function AdminDashboardPage() {
         <section className="card dashboard-card">
           <div className="dashboard-card-heading"><div><p className="eyebrow">PRIORITET</p><h2>Što čeka tebe?</h2></div></div>
           <div className="dashboard-actions">
-            <a href="/admin" className="dashboard-action"><strong>{stats.newOrders.length}</strong><span>Nove narudžbe →</span></a>
-            <a href="/admin/torte-po-zelji" className="dashboard-action"><strong>{stats.customWaiting.length}</strong><span>Torte po želji →</span></a>
-            <a href="/admin/kalendar" className="dashboard-action"><strong>{todayCalendar?.count || 0}</strong><span>Danas u kalendaru →</span></a>
+            <Link to="/admin/narudzbe" className="dashboard-action"><strong>{stats.newOrders.length}</strong><span>Nove narudžbe →</span></Link>
+            <Link to="/admin/torte-po-zelji" className="dashboard-action"><strong>{stats.customWaiting.length}</strong><span>Torte po želji →</span></Link>
+            <Link to="/admin/kalendar" className="dashboard-action"><strong>{todayCalendar?.count || 0}</strong><span>Danas u kalendaru →</span></Link>
           </div>
         </section>
       </div>
 
       <section className="card dashboard-card">
-        <div className="dashboard-card-heading"><div><p className="eyebrow">DANAŠNJE NARUDŽBE</p><h2>Pregled za danas</h2></div><a className="button secondary" href="/admin">Sve narudžbe</a></div>
+        <div className="dashboard-card-heading"><div><p className="eyebrow">DANAŠNJE NARUDŽBE</p><h2>Pregled za danas</h2></div><Link className="button secondary" to="/admin/narudzbe">Sve narudžbe</Link></div>
         {stats.today.length === 0 ? <p className="muted">Danas još nema potvrđenih narudžbi.</p> : <div className="dashboard-order-list">{stats.today.slice(0, 6).map(order => <div className="dashboard-order" key={order._id}><strong>{order.orderNumber}</strong><span>{order.customer?.name}</span><span>{money(order.total)}</span><span>{order.status}</span></div>)}</div>}
       </section>
     </>}
