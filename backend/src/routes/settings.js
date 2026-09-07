@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import Settings from '../models/Settings.js'
+import { adminAuth } from '../middleware/adminAuth.js'
 
 const router = Router()
 
@@ -21,7 +22,7 @@ router.get('/', async (_req, res, next) => {
   } catch (error) { next(error) }
 })
 
-router.put('/', async (req, res, next) => {
+router.put('/', adminAuth, async (req, res, next) => {
   try {
     const update = {
       maxOrdersPerDay: Number(req.body.maxOrdersPerDay) || 10,
