@@ -1,4 +1,5 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { logoutAdmin } from '../../services/adminAuth'
 
 const links = [
   ['/admin', 'Dashboard'],
@@ -10,7 +11,17 @@ const links = [
 ]
 
 export default function AdminNav() {
+  const navigate = useNavigate()
+
+  function logout() {
+    logoutAdmin()
+    navigate('/admin/login', { replace: true })
+  }
+
   return <nav className="admin-nav" aria-label="Administracija">
-    {links.map(([to, label]) => <NavLink key={to} end={to === '/admin'} to={to}>{label}</NavLink>)}
+    <div className="admin-nav-links">
+      {links.map(([to, label]) => <NavLink key={to} end={to === '/admin'} to={to}>{label}</NavLink>)}
+    </div>
+    <button className="admin-logout" type="button" onClick={logout}>Odjava</button>
   </nav>
 }
